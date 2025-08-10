@@ -1,6 +1,8 @@
-<a href="https://github.com/Frisbiz/GuildWave">
-  <img src="public/logo.png" alt="GuildWave logo" width="150"/>
-</a>
+<p align="center">
+  <a href="https://github.com/Frisbiz/GuildWave">
+    <img src="public/logo.png" alt="GuildWave logo" width="150"/>
+  </a>
+</p>
 
 # GuildWave
 
