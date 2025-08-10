@@ -7,7 +7,7 @@
 # GuildWave
 
 
-A polished, educational desktop/web chat client inspired by modern collaboration apps. GuildWave is a portfolio project demonstrating a full-stack architecture using Next.js + Tauri (desktop), Supabase (Auth, Postgres, Realtime, Storage), and GitHub Actions for CI and releases.
+An open source desktop/web chat client inspired by Discord. GuildWave is a personal project demonstrating a full-stack architecture using Next.js + Tauri (desktop), Supabase (Auth, Postgres, Realtime, Storage), and GitHub Actions for CI and releases.
 
 This repository contains:
 - A Next.js frontend (app dir) that can be bundled for desktop with Tauri.
