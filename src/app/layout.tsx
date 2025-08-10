@@ -16,7 +16,12 @@ export const metadata: Metadata = {
   title: "Discord Clone",
   description: "A fully functional Discord clone with proper themes and styling",
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/logo.png', sizes: 'any', type: 'image/png' }
+    ],
+    apple: '/apple-touch-icon.png',
+    shortcut: '/favicon.ico'
   },
 };
 

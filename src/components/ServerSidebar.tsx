@@ -1,10 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { 
-  Home, 
-  Hash, 
-  Users, 
+import {
+  Hash,
+  Users,
   Plus,
   Compass,
   Download
@@ -27,7 +26,7 @@ export default function ServerSidebar({ selectedServer, onServerSelect }: Server
 
   return (
     <div className="server-sidebar w-16 bg-discord-darkest flex flex-col items-center py-3">
-      {/* Home button */}
+      {/* Home button (uses project logo) */}
       <div
         className={`server-icon w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 ${
           selectedServer === 'home' 
@@ -38,7 +37,7 @@ export default function ServerSidebar({ selectedServer, onServerSelect }: Server
         onMouseEnter={() => setHoveredServer('home')}
         onMouseLeave={() => setHoveredServer(null)}
       >
-        <Home size={20} />
+        <img src="/logo.png" alt="GuildWave" className="w-8 h-8 object-contain" />
       </div>
 
       {/* Separator */}
