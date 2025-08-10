@@ -1,4 +1,6 @@
-[![GuildWave logo](public/logo.png)](https://github.com/Frisbiz/GuildWave)
+<a href="https://github.com/Frisbiz/GuildWave">
+  <img src="public/logo.png" alt="GuildWave logo" width="150"/>
+</a>
 
 # GuildWave
 
