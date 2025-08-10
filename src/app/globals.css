@@ -77,6 +77,17 @@ a {
   text-decoration: none;
 }
 
+/* Optimized spacing utilities */
+.server-sidebar .server-icon { margin-top: 8px; margin-bottom: 8px; }
+.server-sidebar .server-list > .server-icon { margin-top: 6px; margin-bottom: 6px; }
+
+/* Message list separation */
+.message-block { margin-top: 8px; margin-bottom: 8px; }
+
+/* Member and voice user separation */
+.member-row { margin-top: 6px; margin-bottom: 6px; }
+.voice-user-row { margin-top: 4px; margin-bottom: 4px; }
+
 /* Discord scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
@@ -95,19 +106,16 @@ a {
   background: var(--discord-lighter);
 }
 
-/* Custom scrollbar for Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--discord-light) var(--discord-darkest);
 }
 
-/* Discord-like focus styles */
 *:focus {
   outline: 2px solid var(--discord-accent);
   outline-offset: 2px;
 }
 
-/* Discord-like button styles */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -122,34 +130,13 @@ a {
   outline: none;
 }
 
-.btn-primary {
-  background: var(--discord-accent);
-  color: white;
-}
+.btn-primary { background: var(--discord-accent); color: white; }
+.btn-primary:hover { background: var(--discord-accent-hover); }
+.btn-secondary { background: var(--discord-light); color: var(--discord-text); }
+.btn-secondary:hover { background: var(--discord-lighter); }
+.btn-danger { background: var(--discord-red); color: white; }
+.btn-danger:hover { background: #d84040; }
 
-.btn-primary:hover {
-  background: var(--discord-accent-hover);
-}
-
-.btn-secondary {
-  background: var(--discord-light);
-  color: var(--discord-text);
-}
-
-.btn-secondary:hover {
-  background: var(--discord-lighter);
-}
-
-.btn-danger {
-  background: var(--discord-red);
-  color: white;
-}
-
-.btn-danger:hover {
-  background: #d84040;
-}
-
-/* Discord-like input styles */
 .input {
   background: var(--discord-darkest);
   border: 1px solid var(--discord-border);
@@ -160,144 +147,84 @@ a {
   transition: border-color 0.2s ease;
 }
 
-.input:focus {
-  border-color: var(--discord-accent);
-  outline: none;
+.input:focus { border-color: var(--discord-accent); outline: none; }
+.input::placeholder { color: var(--discord-text-muted); }
+
+.card { background: var(--discord-darker); border-radius: 8px; border: 1px solid var(--discord-border); padding: 16px; }
+
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.85); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.modal-content { background: var(--discord-darker); border-radius: 8px; border: 1px solid var(--discord-border); max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; }
+
+.tooltip { position: relative; }
+.tooltip::after { content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--discord-darkest); color: var(--discord-text); padding: 4px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; z-index: 1000; }
+.tooltip:hover::after { opacity: 1; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideIn { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.fade-in { animation: fadeIn 0.2s ease; }
+.slide-in { animation: slideIn 0.2s ease; }
+
+.status-online { background: var(--discord-green); }
+.status-idle { background: var(--discord-yellow); }
+.status-dnd { background: var(--discord-red); }
+.status-offline { background: var(--discord-text-muted); }
+
+.mention { background: var(--discord-accent); color: white; padding: 2px 4px; border-radius: 3px; font-weight: 500; }
+
+.code-block { background: var(--discord-darkest); border-radius: 4px; padding: 12px; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; overflow-x: auto; }
+
+.emoji { width: 1.2em; height: 1.2em; vertical-align: middle; margin: 0 2px; }
+
+/* Enforced panel inner padding — reduced to a subtle inset (6px) per your request */
+.channel-panel > .flex-1 > div,
+.channel-panel > .flex-1,
+.user-panel > .flex-1 {
+  padding-left: 6px !important;
+  padding-right: 6px !important;
 }
 
-.input::placeholder {
-  color: var(--discord-text-muted);
+/* Chat-specific smaller inset (half of the panels) */
+.chat-panel,
+.chat-panel > .flex-1,
+.chat-panel > .flex-1 > div {
+  padding-left: 3px !important;
+  padding-right: 3px !important;
 }
 
-/* Discord-like card styles */
-.card {
-  background: var(--discord-darker);
-  border-radius: 8px;
-  border: 1px solid var(--discord-border);
-  padding: 16px;
+/* Per-item controls and items: small left inset so icons/text aren't flush.
+   Channel and user items remain at 6px; chat message blocks get 3px. */
+.channel-panel .pl-6,
+.channel-panel [style*="padding-left: 32px"],
+.channel-panel .pl-8,
+.user-panel [style*="padding-left: 32px"],
+.user-panel .pl-6,
+.user-panel .pl-8,
+.chat-panel .message-block,
+.chat-panel .message-block > * {
+  /* channel/user items kept at 6px via earlier rules; chat message items reduced below */
+  padding-left: 6px !important;
 }
 
-/* Discord-like modal styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+/* Chat message items — smaller inset */
+.chat-panel .message-block,
+.chat-panel .message-block > * {
+  padding-left: 3px !important;
+  padding-right: 3px !important;
 }
 
-.modal-content {
-  background: var(--discord-darker);
-  border-radius: 8px;
-  border: 1px solid var(--discord-border);
-  max-width: 500px;
-  width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
+/* Member rows and voice users — subtle horizontal spacing */
+.channel-panel .member-row,
+.user-panel .member-row,
+.channel-panel .voice-user-row,
+.user-panel .voice-user-row {
+  padding-left: 6px !important;
+  padding-right: 6px !important;
 }
 
-/* Discord-like tooltip styles */
-.tooltip {
-  position: relative;
+/* Keep backgrounds touching between panels */
+:root {
+  --panel-gap-enforcer: 0px;
 }
-
-.tooltip::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--discord-darkest);
-  color: var(--discord-text);
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-  z-index: 1000;
-}
-
-.tooltip:hover::after {
-  opacity: 1;
-}
-
-/* Discord-like animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateY(-10px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.fade-in {
-  animation: fadeIn 0.2s ease;
-}
-
-.slide-in {
-  animation: slideIn 0.2s ease;
-}
-
-/* Discord-like status indicators */
-.status-online {
-  background: var(--discord-green);
-}
-
-.status-idle {
-  background: var(--discord-yellow);
-}
-
-.status-dnd {
-  background: var(--discord-red);
-}
-
-.status-offline {
-  background: var(--discord-text-muted);
-}
-
-/* Discord-like mention styles */
-.mention {
-  background: var(--discord-accent);
-  color: white;
-  padding: 2px 4px;
-  border-radius: 3px;
-  font-weight: 500;
-}
-
-/* Discord-like code block styles */
-.code-block {
-  background: var(--discord-darkest);
-  border-radius: 4px;
-  padding: 12px;
-  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-  font-size: 13px;
-  line-height: 1.6;
-  overflow-x: auto;
-}
-
-/* Discord-like emoji styles */
-.emoji {
-  width: 1.2em;
-  height: 1.2em;
-  vertical-align: middle;
-  margin: 0 2px;
+.discord-layout-gap-fix {
+  gap: var(--panel-gap-enforcer) !important;
 }

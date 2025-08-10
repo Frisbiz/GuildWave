@@ -75,11 +75,11 @@ export default function VoiceChannelUsers({ channelId, users }: VoiceChannelUser
   }
 
   return (
-    <div className="px-4 py-2 space-y-2">
+    <div className="px-4 py-2">
       {channelUsers.map((user) => (
         <div
           key={user.id}
-          className="flex items-center space-x-3 p-2.5 rounded-md cursor-pointer text-sm hover:bg-discord-light/60"
+          className="voice-user-row flex items-center space-x-3 p-3 rounded-md cursor-pointer text-sm hover:bg-discord-light/60"
         >
           {/* Avatar with status */}
           <div className="relative">

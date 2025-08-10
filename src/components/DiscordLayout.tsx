@@ -8,7 +8,7 @@ interface DiscordLayoutProps {
 
 export default function DiscordLayout({ children }: DiscordLayoutProps) {
   return (
-    <div className="flex h-screen bg-discord-dark overflow-hidden">
+    <div className="flex h-screen bg-discord-dark overflow-hidden gap-x-0">
       {children}
     </div>
   );

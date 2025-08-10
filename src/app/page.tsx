@@ -40,11 +40,12 @@ export default function Home() {
         <ChannelList 
           selectedChannel={selectedChannel}
           onChannelSelect={setSelectedChannel}
+          onVoiceEvent={(type, message) => addNotification(message, type)}
         />
         <ChatArea 
           selectedChannel={selectedChannel}
         />
-        <UserSidebar onVoiceEvent={(type, message) => addNotification(message, type)} />
+        <UserSidebar />
       </DiscordLayout>
 
       {/* Voice Notifications */}

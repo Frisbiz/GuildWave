@@ -5,7 +5,6 @@ import {
   Home, 
   Hash, 
   Users, 
-  Settings, 
   Plus,
   Compass,
   Download
@@ -17,7 +16,6 @@ interface ServerSidebarProps {
 }
 
 const servers = [
-  { id: 'home', name: 'Home', icon: Home, color: '#7289da' },
   { id: 'general', name: 'General', icon: Hash, color: '#43b581' },
   { id: 'gaming', name: 'Gaming', icon: Users, color: '#f04747' },
   { id: 'music', name: 'Music', icon: Users, color: '#faa61a' },
@@ -28,10 +26,10 @@ export default function ServerSidebar({ selectedServer, onServerSelect }: Server
   const [hoveredServer, setHoveredServer] = useState<string | null>(null);
 
   return (
-    <div className="w-16 bg-discord-darkest flex flex-col items-center py-5 space-y-7">
+    <div className="server-sidebar w-16 bg-discord-darkest flex flex-col items-center py-3">
       {/* Home button */}
       <div
-        className={`w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 ${
+        className={`server-icon w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 ${
           selectedServer === 'home' 
             ? 'bg-discord-accent text-white' 
             : 'bg-discord-light text-discord-text hover:bg-discord-accent hover:text-white'
@@ -44,41 +42,43 @@ export default function ServerSidebar({ selectedServer, onServerSelect }: Server
       </div>
 
       {/* Separator */}
-      <div className="w-8 h-px bg-discord-separator my-6"></div>
+      <div className="w-8 h-px bg-discord-separator my-4"></div>
 
       {/* Server buttons */}
-      {servers.map((server) => (
-        <div
-          key={server.id}
-          className={`relative w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 ${
-            selectedServer === server.id 
-              ? 'bg-discord-accent text-white' 
-              : 'bg-discord-light text-discord-text hover:bg-discord-accent hover:text-white'
-          }`}
-          onClick={() => onServerSelect(server.id)}
-          onMouseEnter={() => setHoveredServer(server.id)}
-          onMouseLeave={() => setHoveredServer(null)}
-        >
-          <server.icon size={20} />
-          
-          {/* Hover indicator */}
-          {hoveredServer === server.id && selectedServer !== server.id && (
-            <div className="absolute -left-2 w-1 h-8 bg-white rounded-r-full"></div>
-          )}
-          
-          {/* Selected indicator */}
-          {selectedServer === server.id && (
-            <div className="absolute -left-2 w-1 h-8 bg-white rounded-r-full"></div>
-          )}
-        </div>
-      ))}
+      <div className="server-list w-full flex flex-col items-center">
+        {servers.map((server) => (
+          <div
+            key={server.id}
+            className={`server-icon relative w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 ${
+              selectedServer === server.id 
+                ? 'bg-discord-accent text-white' 
+                : 'bg-discord-light text-discord-text hover:bg-discord-accent hover:text-white'
+            }`}
+            onClick={() => onServerSelect(server.id)}
+            onMouseEnter={() => setHoveredServer(server.id)}
+            onMouseLeave={() => setHoveredServer(null)}
+          >
+            <server.icon size={20} />
+            
+            {/* Hover indicator */}
+            {hoveredServer === server.id && selectedServer !== server.id && (
+              <div className="absolute -left-2 w-1 h-8 bg-white rounded-r-full"></div>
+            )}
+            
+            {/* Selected indicator */}
+            {selectedServer === server.id && (
+              <div className="absolute -left-2 w-1 h-8 bg-white rounded-r-full"></div>
+            )}
+          </div>
+        ))}
+      </div>
 
       {/* Separator */}
-      <div className="w-8 h-px bg-discord-separator my-6"></div>
+      <div className="w-8 h-px bg-discord-separator my-4"></div>
 
       {/* Add server button */}
       <div
-        className="w-12 h-12 rounded-full bg-discord-light text-discord-text hover:bg-discord-green hover:text-white flex items-center justify-center cursor-pointer transition-all duration-200"
+        className="server-icon w-12 h-12 rounded-full bg-discord-light text-discord-text hover:bg-discord-green hover:text-white flex items-center justify-center cursor-pointer transition-all duration-200"
         title="Add a Server"
       >
         <Plus size={20} />
@@ -86,7 +86,7 @@ export default function ServerSidebar({ selectedServer, onServerSelect }: Server
 
       {/* Explore button */}
       <div
-        className="w-12 h-12 rounded-full bg-discord-light text-discord-text hover:bg-discord-accent hover:text-white flex items-center justify-center cursor-pointer transition-all duration-200"
+        className="server-icon w-12 h-12 rounded-full bg-discord-light text-discord-text hover:bg-discord-accent hover:text-white flex items-center justify-center cursor-pointer transition-all duration-200"
         title="Explore Public Servers"
       >
         <Compass size={20} />
@@ -94,7 +94,7 @@ export default function ServerSidebar({ selectedServer, onServerSelect }: Server
 
       {/* Download button */}
       <div
-        className="w-12 h-12 rounded-full bg-discord-light text-discord-text hover:bg-discord-accent hover:text-white flex items-center justify-center cursor-pointer transition-all duration-200"
+        className="server-icon w-12 h-12 rounded-full bg-discord-light text-discord-text hover:bg-discord-accent hover:text-white flex items-center justify-center cursor-pointer transition-all duration-200"
         title="Download Apps"
       >
         <Download size={20} />

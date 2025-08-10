@@ -12,19 +12,21 @@ import {
   User,
   Mic,
   MicOff,
-  Headphones
+  Headphones,
+  LogOut
 } from 'lucide-react';
 import { useVoiceStore } from '@/store/voiceStore';
 
 interface ChannelListProps {
   selectedChannel: string;
   onChannelSelect: (channel: string) => void;
+  onVoiceEvent?: (type: 'join' | 'leave' | 'mute' | 'unmute', message: string) => void;
 }
 
-export default function ChannelList({ selectedChannel, onChannelSelect }: ChannelListProps) {
+export default function ChannelList({ selectedChannel, onChannelSelect, onVoiceEvent }: ChannelListProps) {
   const [collapsedCategories, setCollapsedCategories] = useState<Set<string>>(new Set());
 
-  const { channels, getUsersInChannel, selectedVoiceChannelId, joinVoiceChannel, getChannelById, currentUser } = useVoiceStore();
+  const { channels, getUsersInChannel, selectedVoiceChannelId, joinVoiceChannel, getChannelById, currentUser, leaveVoiceChannel, toggleMute, toggleDeafen } = useVoiceStore();
 
   const textCategories = [
     {
@@ -74,10 +76,23 @@ export default function ChannelList({ selectedChannel, onChannelSelect }: Channe
     if (!res.joined && res.reason) alert(res.reason);
   };
 
+  const handleLeave = () => {
+    const prevId = currentUser.currentChannel;
+    const prev = prevId ? getChannelById(prevId) : undefined;
+    leaveVoiceChannel();
+    if (prev) onVoiceEvent?.('leave', `Disconnected from ${prev.name}`);
+  };
+
+  const handleToggleMute = () => {
+    toggleMute();
+    const nextMuted = !currentUser.isMuted;
+    onVoiceEvent?.(nextMuted ? 'mute' : 'unmute', nextMuted ? 'Muted' : 'Unmuted');
+  };
+
   return (
-    <div className="w-60 bg-discord-darker flex flex-col">
+    <div className="w-60 bg-discord-darker flex flex-col border-r border-discord-border px-6 channel-panel">
       {/* Server header */}
-      <div className="h-14 bg-discord-darkest flex items-center justify-between px-5 border-b border-discord-border">
+      <div className="h-14 bg-discord-darkest flex items-center justify-between pl-5 pr-5 border-b border-discord-border">
         <h1 className="text-discord-text font-semibold text-sm">Discord Clone</h1>
         <div className="flex items-center space-x-2">
           <div className="w-4 h-4 rounded-full bg-discord-green"></div>
@@ -86,11 +101,11 @@ export default function ChannelList({ selectedChannel, onChannelSelect }: Channe
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        <div className="p-3">
+        <div className="px-4 pt-2 pb-2">
           {textCategories.map((category) => (
-            <div key={category.category} className="mb-6">
+            <div key={category.category} className="mb-4">
               <div 
-                className="flex items-center justify-between text-discord-text-muted text-xs font-semibold uppercase tracking-wide px-3 py-2 cursor-pointer hover:text-discord-text"
+                className="flex items-center justify-between text-discord-text-muted text-xs font-semibold uppercase tracking-wide pl-6 py-2 cursor-pointer hover:text-discord-text"
                 onClick={() => toggleCategory(category.category)}
               >
                 <span>{category.category}</span>
@@ -106,11 +121,12 @@ export default function ChannelList({ selectedChannel, onChannelSelect }: Channe
                   {category.channels.map((channel) => (
                     <div
                       key={channel.id}
-                      className={`flex items-center space-x-2 px-3 py-1.5 rounded-md cursor-pointer text-sm ${
+                      className={`flex items-center space-x-2 pl-8 py-3 rounded-md cursor-pointer text-sm ${
                         selectedChannel === channel.id
                           ? 'bg-discord-light text-discord-text'
                           : 'text-discord-text-muted hover:bg-discord-light hover:text-discord-text'
                       }`}
+                      style={{ paddingLeft: '32px' }}
                       onClick={() => onChannelSelect(channel.id)}
                     >
                       <channel.icon size={16} />
@@ -123,13 +139,13 @@ export default function ChannelList({ selectedChannel, onChannelSelect }: Channe
           ))}
 
           {/* Voice channels */}
-          <div className="mb-6">
-            <div 
-              className="flex items-center justify-between text-discord-text-muted text-xs font-semibold uppercase tracking-wide px-3 py-2"
-            >
-              <span>VOICE CHANNELS</span>
-            </div>
-            <div className="mt-2 space-y-1.5">
+            <div className="mb-4">
+              <div 
+                className="flex items-center justify-between text-discord-text-muted text-xs font-semibold uppercase tracking-wide pl-6 py-2"
+              >
+                <span>VOICE CHANNELS</span>
+              </div>
+              <div className="mt-2 space-y-1.5">
               {channels.map((vc) => {
                 const users = getUsersInChannel(vc.id);
                 const isSelected = selectedVoiceChannelId === vc.id;
@@ -137,25 +153,26 @@ export default function ChannelList({ selectedChannel, onChannelSelect }: Channe
                 return (
                   <div key={vc.id} className="mb-2">
                     <div
-                      className={`flex items-center justify-between px-3 py-1.5 text-sm rounded-md cursor-pointer ${
+                      className={`flex items-center justify-between pl-8 py-3 text-sm rounded-md cursor-pointer ${
                         isSelected || isInThisChannel
                           ? 'bg-discord-light text-discord-text'
                           : 'text-discord-text-muted hover:text-discord-text hover:bg-discord-light'
                       }`}
+                      style={{ paddingLeft: '32px' }}
                       onClick={() => handleJoinVoice(vc.id)}
                     >
-                      <div className="flex items-center space-x-2">
-                        <Volume2 size={16} />
-                        <span>{vc.name}</span>
-                      </div>
-                      <span className="text-xs">{users.length}/{vc.maxUsers}</span>
-                    </div>
+                          <div className="flex items-center space-x-2">
+                            <Volume2 size={16} />
+                            <span>{vc.name}</span>
+                          </div>
+                          <span className="text-xs">{users.length}/{vc.maxUsers}</span>
+                        </div>
 
                     {/* Show users under voice channel like Discord */}
                     {users.length > 0 && (
-                      <div className="ml-6 mt-2 space-y-1.5">
+                      <div className="ml-6 mt-1 space-y-1">
                         {users.map((u) => (
-                          <div key={u.id} className="flex items-center justify-between px-2.5 py-1.5 text-xs text-discord-text hover:bg-discord-light/60 rounded">
+                          <div key={u.id} className="flex items-center justify-between pl-8 py-3 text-xs text-discord-text hover:bg-discord-light/60 rounded" style={{ paddingLeft: '32px' }}>
                             <div className="flex items-center space-x-2 min-w-0">
                               <div className="relative">
                                 <div className="w-6 h-6 rounded-full bg-discord-accent flex items-center justify-center text-white text-[10px] font-semibold">
@@ -187,21 +204,59 @@ export default function ChannelList({ selectedChannel, onChannelSelect }: Channe
         </div>
       </div>
 
-      {/* Footer current user */}
-      <div className="bg-discord-darkest border-t border-discord-border">
-        <div className="p-4 flex items-center space-x-3">
+      {/* Current user voice controls */}
+      <div className="bg-discord-darkest border-t border-discord-border pl-5 pr-5 py-4">
+        <div className="flex items-center space-x-3">
           <div className="relative">
-            <div className="w-8 h-8 rounded-full bg-discord-accent flex items-center justify-center text-white text-sm font-semibold">
+            <div className="w-9 h-9 rounded-full bg-discord-accent flex items-center justify-center text-white text-xs font-semibold">
               U
             </div>
-            <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-discord-green border-2 border-discord-darkest"></div>
+            <div className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-discord-green border-2 border-discord-darkest"></div>
           </div>
+          
           <div className="flex-1 min-w-0">
-            <div className="text-discord-text text-sm font-medium">User</div>
-            <div className="text-discord-text-muted text-xs">Online</div>
+            <div className="text-discord-text text-sm font-medium">You</div>
+            <div className="text-discord-text-muted text-xs">
+              {currentUser.currentChannel 
+                ? `Connected to ${getChannelById(currentUser.currentChannel)?.name}`
+                : 'Not connected to voice'
+              }
+            </div>
           </div>
+          
           <div className="flex items-center space-x-1.5">
-            <button className="p-1.5 text-discord-text-muted hover:text-discord-text">
+            {currentUser.currentChannel && (
+              <button 
+                className="p-1.5 text-discord-text-muted hover:text-discord-text hover:bg-discord-light rounded"
+                onClick={handleLeave}
+                title="Leave voice channel"
+              >
+                <LogOut size={16} />
+              </button>
+            )}
+            <button 
+              className={`p-1.5 rounded transition-colors ${
+                currentUser.isMuted 
+                  ? 'text-discord-red hover:text-discord-red hover:bg-discord-light' 
+                  : 'text-discord-text-muted hover:text-discord-text hover:bg-discord-light'
+              }`}
+              onClick={handleToggleMute}
+              title={currentUser.isMuted ? 'Unmute' : 'Mute'}
+            >
+              {currentUser.isMuted ? <MicOff size={16} /> : <Mic size={16} />}
+            </button>
+            <button 
+              className={`p-1.5 rounded transition-colors ${
+                currentUser.isDeafened 
+                  ? 'text-discord-red hover:text-discord-red hover:bg-discord-light' 
+                  : 'text-discord-text-muted hover:text-discord-text hover:bg-discord-light'
+              }`}
+              onClick={() => toggleDeafen()}
+              title={currentUser.isDeafened ? 'Undeafen' : 'Deafen'}
+            >
+              <Headphones size={16} />
+            </button>
+            <button className="p-1.5 text-discord-text-muted hover:text-discord-text hover:bg-discord-light rounded">
               <Settings size={16} />
             </button>
           </div>

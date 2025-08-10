@@ -54,7 +54,7 @@ export default function Message({ message }: MessageProps) {
 
   return (
     <div 
-      className="group flex items-start space-x-4 hover:bg-discord-light/50 rounded px-3 py-2 -mx-3"
+      className="group flex items-start space-x-3 hover:bg-discord-light/50 rounded px-0 py-1.5"
       onMouseEnter={() => setShowActions(true)}
       onMouseLeave={() => setShowActions(false)}
     >
@@ -67,7 +67,7 @@ export default function Message({ message }: MessageProps) {
 
       {/* Message content */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-center space-x-2 mb-1.5">
+        <div className="flex items-center space-x-2 mb-1">
           <span className={`text-sm font-medium ${getRoleColor(message.role)}`}>
             {message.author}
           </span>
