@@ -1,5 +1,5 @@
 <a href="https://github.com/Frisbiz/GuildWave">
-  <img src="public/logo.png" alt="GuildWave logo" width="150"/>  # GuildWave
+  <img src="public/logo.png" alt="GuildWave logo" width="150"/># GuildWave
 </a>
 
 # GuildWave
