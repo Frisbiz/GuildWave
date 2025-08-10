@@ -1,7 +1,8 @@
 <a href="https://github.com/Frisbiz/GuildWave">
   <img src="public/logo.png" alt="GuildWave logo" width="150"/>  # GuildWave
 </a>
- # GuildWave
+
+# GuildWave
 A polished, educational desktop/web chat client inspired by modern collaboration apps. GuildWave is a portfolio project demonstrating a full-stack architecture using Next.js + Tauri (desktop), Supabase (Auth, Postgres, Realtime, Storage), and GitHub Actions for CI and releases.
 
 This repository contains:
